@@ -15,7 +15,12 @@ public class PacketSerializer {
         buf.writeByte(str.length);
         buf.writeBytes(str);*/
         writeString(string, buf);
-        result = buf.array();
+
+        // Marcelektro - fix errors on 1.20.3+ versions
+        result = new byte[buf.readableBytes()];
+        buf.readBytes(result);
+        // - end
+
         buf.release();
     }
 
