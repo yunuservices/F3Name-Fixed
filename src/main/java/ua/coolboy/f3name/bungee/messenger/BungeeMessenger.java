@@ -18,10 +18,10 @@ import ua.coolboy.f3name.core.F3Name;
 
 public class BungeeMessenger implements Listener {
 
-    private F3NameBungee plugin;
-    private Map<String, Callback<String>> groupCallback;
-    private Map<String, Callback<String>> messageCallback;
-    private Map<String, Callback<Boolean>> checkCallback;
+    private final F3NameBungee plugin;
+    private final Map<String, Callback<String>> groupCallback;
+    private final Map<String, Callback<String>> messageCallback;
+    private final Map<String, Callback<Boolean>> checkCallback;
 
     public BungeeMessenger(F3NameBungee plugin) {
         this.plugin = plugin;

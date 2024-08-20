@@ -9,23 +9,22 @@ import ua.coolboy.f3name.core.F3Group;
 
 public class BukkitConfigParser implements ConfigParser {
 
-    private FileConfiguration config;
+    private final boolean coloredConsole, bungeecord, checkForUpdates, autoupdate;
 
-    private boolean coloredConsole, bungeecord, checkForUpdates, autoupdate;
-
-    private List<F3Group> groups;
+    private final List<F3Group> groups;
 
     public BukkitConfigParser(FileConfiguration config) {
-        this.config = config;
-
         coloredConsole = config.getBoolean("colored-console", true);
         bungeecord = config.getBoolean("bungeecord-as-primary", false);
         checkForUpdates = config.getBoolean("check-for-updates", true);
         autoupdate = config.getBoolean("auto-update", true);
         
         groups = new ArrayList<>();
-        for (String key : config.getConfigurationSection("groups").getKeys(false)) {
+        ConfigurationSection groupsSection = config.getConfigurationSection("groups");
+        if (groupsSection == null) return;
+        for (String key : groupsSection.getKeys(false)) {
             ConfigurationSection section = config.getConfigurationSection("groups." + key);
+            if (section == null) continue;
             List<String> messages = section.getStringList("f3names");
             int updateTime = section.getInt("update-time", 200);
             boolean shuffle = section.getBoolean("shuffle", false);

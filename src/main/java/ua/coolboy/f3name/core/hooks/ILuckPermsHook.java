@@ -6,6 +6,6 @@ public interface ILuckPermsHook {
     /*
         Better than Vault, we can get best group from already existed in config with sort by weight
      */
-    public String getBestPlayerGroup(UUID uuid);
+    String getBestPlayerGroup(UUID uuid);
 
 }

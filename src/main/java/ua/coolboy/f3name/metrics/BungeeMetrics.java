@@ -32,6 +32,7 @@ import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
+@SuppressWarnings("all")
 public class BungeeMetrics {
 
   private final Plugin plugin;

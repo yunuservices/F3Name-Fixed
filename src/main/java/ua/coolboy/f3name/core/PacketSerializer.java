@@ -2,18 +2,15 @@ package ua.coolboy.f3name.core;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+
 import java.nio.charset.StandardCharsets;
 
 public class PacketSerializer {
 
-    private ByteBuf buf;
-    private byte[] result;
+    private final byte[] result;
 
     public PacketSerializer(String string) {
-        buf = Unpooled.buffer();
-        /*byte[] str = string.getBytes(StandardCharsets.UTF_8);
-        buf.writeByte(str.length);
-        buf.writeBytes(str);*/
+        ByteBuf buf = Unpooled.buffer();
         writeString(string, buf);
 
         // Marcelektro - fix errors on 1.20.3+ versions
@@ -33,12 +30,11 @@ public class PacketSerializer {
         byte[] b = s.getBytes(StandardCharsets.UTF_8);
         writeVarInt(b.length, buf);
         buf.writeBytes(b);
-
     }
 
     private void writeVarInt(int value, ByteBuf output) {
         int part;
-        while (true) {
+        do {
             part = value & 0x7F;
 
             value >>>= 7;
@@ -48,10 +44,7 @@ public class PacketSerializer {
 
             output.writeByte(part);
 
-            if (value == 0) {
-                break;
-            }
-        }
+        } while (value != 0);
     }
 
     public byte[] toArray() {

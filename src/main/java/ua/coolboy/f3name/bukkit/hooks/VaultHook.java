@@ -10,11 +10,12 @@ import ua.coolboy.f3name.core.F3Group;
 
 public class VaultHook {
 
-    private Permission perms;
-    private List<String> groups;
+    private final Permission perms;
+    private final List<String> groups;
 
     public VaultHook(List<F3Group> groups) {
         RegisteredServiceProvider<Permission> rsp = Bukkit.getServicesManager().getRegistration(Permission.class);
+        if (rsp == null) throw new IllegalStateException("Found Vault but service not found");
         perms = rsp.getProvider();
         this.groups = groups.stream().map(F3Group::getGroupName).collect(Collectors.toList());
     }

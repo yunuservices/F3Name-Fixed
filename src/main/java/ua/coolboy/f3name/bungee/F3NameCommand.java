@@ -7,7 +7,7 @@ import net.md_5.bungee.api.plugin.Command;
 
 public class F3NameCommand extends Command {
 
-    private F3NameBungee plugin;
+    private final F3NameBungee plugin;
 
     public F3NameCommand(F3NameBungee plugin) {
         super("f3namebungee", "f3name.reload", "f3nameb");
@@ -26,7 +26,7 @@ public class F3NameCommand extends Command {
         } else {
             sender.sendMessage(TextComponent.fromLegacyText(
                     F3NameBungee.PREFIX + ChatColor.GOLD + "v"
-                    + plugin.getDescription().getVersion() + " by Cool_boy (aka prettydude)"
+                            + plugin.getDescription().getVersion() + " by Cool_boy (aka prettydude)"
             ));
         }
     }

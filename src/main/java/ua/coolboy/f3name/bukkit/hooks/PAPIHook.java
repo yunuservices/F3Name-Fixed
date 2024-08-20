@@ -7,7 +7,7 @@ import org.bukkit.plugin.Plugin;
 public class PAPIHook {
     private static boolean isHooked;
     
-    public PAPIHook(Plugin papi) {
+    public static void setup(Plugin papi) {
         isHooked = papi != null;
     }
 

@@ -18,29 +18,28 @@ import ua.coolboy.f3name.core.F3Group;
 
 public class BungeeConfigParser implements ConfigParser {
 
-    private Configuration config;
+    private final List<F3Group> groups;
     
-    private List<F3Group> groups;
+    private final List<String> excludedServers;
     
-    private List<String> excludedServers;
-    
-    private boolean coloredConsole, onlyapi, checkForUpdates;
+    private final boolean coloredConsole, onlyApi, checkForUpdates;
     
     public BungeeConfigParser(Plugin plugin) throws IOException {
-        if (!plugin.getDataFolder().exists()) {
-            plugin.getDataFolder().mkdir();
+        File dataFolder = plugin.getDataFolder();
+        if (!dataFolder.exists()) {
+            if (!dataFolder.mkdir()) throw new IllegalStateException("Cannot create data folder");
         }
 
-        File file = new File(plugin.getDataFolder(), "config.yml");
+        File file = new File(dataFolder, "config.yml");
 
         if (!file.exists()) {
             InputStream in = plugin.getResourceAsStream("bungee_config.yml");
             Files.copy(in, file.toPath());
         }
-        config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+        Configuration config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
         
         coloredConsole = config.getBoolean("colored-console", true);
-        onlyapi = config.getBoolean("only-api", false);
+        onlyApi = config.getBoolean("only-api", false);
         checkForUpdates = config.getBoolean("check-for-updates", true);
         
         excludedServers = config.getStringList("excluded-servers");
@@ -60,7 +59,7 @@ public class BungeeConfigParser implements ConfigParser {
     }
     
     public boolean isOnlyAPI() {
-        return onlyapi;
+        return onlyApi;
     }
     
     @Override

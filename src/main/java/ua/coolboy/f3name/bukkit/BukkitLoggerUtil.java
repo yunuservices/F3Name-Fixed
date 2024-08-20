@@ -11,7 +11,7 @@ import ua.coolboy.f3name.core.LoggerUtil;
 public class BukkitLoggerUtil implements LoggerUtil {
 
     private boolean coloredConsole;
-    private ConsoleCommandSender console;
+    private final ConsoleCommandSender console;
 
     public BukkitLoggerUtil() {
         this(true);
@@ -29,12 +29,12 @@ public class BukkitLoggerUtil implements LoggerUtil {
 
     @Override
     public void error(Object obj) {
-        console.sendMessage(getMessage(obj, ChatColor.DARK_RED));
+        console.sendMessage(getMessage(obj, ChatColor.RED));
     }
 
     @Override
     public void error(Object obj, Throwable t) {
-        console.sendMessage(getMessage(obj + "\n" + t.getMessage(), ChatColor.DARK_RED));
+        console.sendMessage(getMessage(obj + "\n" + t.getMessage(), ChatColor.RED));
     }
     
     @Override

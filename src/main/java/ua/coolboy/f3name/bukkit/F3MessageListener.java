@@ -6,10 +6,11 @@ import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.jetbrains.annotations.NotNull;
 
 public class F3MessageListener implements PluginMessageListener {
 
-    private F3NameBukkit plugin;
+    private final F3NameBukkit plugin;
 
     public F3MessageListener(F3NameBukkit plugin) {
         this.plugin = plugin;
@@ -25,7 +26,7 @@ public class F3MessageListener implements PluginMessageListener {
         group - get player group
      */
     @Override
-    public void onPluginMessageReceived(String string, Player player, byte[] bytes) {
+    public void onPluginMessageReceived(@NotNull String string, @NotNull Player player, byte[] bytes) {
         ByteArrayDataInput in = ByteStreams.newDataInput(bytes);
         String code = in.readUTF();
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
@@ -41,7 +42,6 @@ public class F3MessageListener implements PluginMessageListener {
                 break;
             case "message":
                 String name = in.readUTF();
-                
                 Player pl = Bukkit.getPlayer(name);
                 if (pl == null) {
                     return;

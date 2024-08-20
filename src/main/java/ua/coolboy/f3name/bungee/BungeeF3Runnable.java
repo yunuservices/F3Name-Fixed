@@ -1,41 +1,34 @@
 package ua.coolboy.f3name.bungee;
 
 import com.google.common.collect.ImmutableList;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
-
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 import net.md_5.bungee.protocol.ProtocolConstants;
-
 import ua.coolboy.f3name.core.F3Group;
 import ua.coolboy.f3name.core.F3Runnable;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
 public class BungeeF3Runnable implements Runnable, F3Runnable {
 
-    private F3Group group;
-    private List<String> names;
-    private int current;
-
     private static final Random random = new Random();
-
-    private List<ProxiedPlayer> players;
-    private ProxyServer server;
-
-    private F3NameBungee plugin;
+    private final F3Group group;
+    private final List<String> names;
+    private final List<ProxiedPlayer> players;
+    private final F3NameBungee plugin;
+    private int current;
     private ScheduledTask task;
 
     public BungeeF3Runnable(F3NameBungee plugin, F3Group group) {
         this.plugin = plugin;
         this.group = group;
         this.players = new ArrayList<>();
-        server = ProxyServer.getInstance();
 
         if (group.getNamesList() == null || group.getNamesList().isEmpty()) {
             throw new IllegalArgumentException("List must contain at least one string!");
@@ -125,7 +118,7 @@ public class BungeeF3Runnable implements Runnable, F3Runnable {
     public ScheduledTask runTaskTimer(Plugin plugin, int delay, int period) {
         return task = plugin.getProxy().getScheduler().schedule(plugin, this, delay / 20, period / 20, TimeUnit.SECONDS);
     }
-    
+
     public ScheduledTask getTask() {
         return task;
     }

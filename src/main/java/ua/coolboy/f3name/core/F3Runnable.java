@@ -2,12 +2,12 @@ package ua.coolboy.f3name.core;
 
 import java.util.List;
 
-public interface F3Runnable extends Runnable{
+public interface F3Runnable extends Runnable {
 
-    public F3Group getGroup();
-    
-    public String getCurrentString();
+    F3Group getGroup();
 
-    public List<String> getStrings();
-    
+    String getCurrentString();
+
+    List<String> getStrings();
+
 }

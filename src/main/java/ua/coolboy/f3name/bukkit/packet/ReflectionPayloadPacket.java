@@ -14,7 +14,7 @@ import ua.coolboy.f3name.bukkit.hooks.PAPIHook;
 
 public class ReflectionPayloadPacket {
 
-    private F3NameBukkit plugin;
+    private final F3NameBukkit plugin;
 
     public ReflectionPayloadPacket(F3NameBukkit plugin) {
         this.plugin = plugin;

@@ -1,17 +1,13 @@
 package ua.coolboy.f3name.bukkit;
 
+import org.jetbrains.annotations.NotNull;
 import ua.coolboy.f3name.spiget.SpigetUpdateBukkit;
 import ua.coolboy.f3name.metrics.BukkitMetrics;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -45,7 +41,7 @@ public class F3NameBukkit extends JavaPlugin implements Listener, F3Name {
     private HashMap<String, BukkitF3Runnable> runnables;
     private HashMap<Player, BukkitF3Runnable> players;
 
-    private String serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+    private final String serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 
     private static BukkitConfigParser parser;
 
@@ -53,7 +49,6 @@ public class F3NameBukkit extends JavaPlugin implements Listener, F3Name {
 
     private ILuckPermsHook lpHook;
     private VaultHook vaultHook;
-    private PAPIHook papiHook;
 
     private boolean bungeePlugin;
 
@@ -68,7 +63,7 @@ public class F3NameBukkit extends JavaPlugin implements Listener, F3Name {
         F3NameBukkit.plugin = this;
         logger = new BukkitLoggerUtil();
 
-        new F3NameAPI(this);
+        F3NameAPI.setInstance(this);
 
         File file = new File(getDataFolder(), "config.yml");
         if (!file.exists()) {
@@ -139,9 +134,9 @@ public class F3NameBukkit extends JavaPlugin implements Listener, F3Name {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (sender.hasPermission("f3name.reload") && args.length == 1 && args[0].equals("reload")) {
-            runnables.values().stream().forEach(BukkitF3Runnable::cancel);
+            runnables.values().forEach(BukkitF3Runnable::cancel);
 
             reload();
 
@@ -153,7 +148,7 @@ public class F3NameBukkit extends JavaPlugin implements Listener, F3Name {
     }
 
     private void check() {
-        if (Bukkit.getOnlinePlayers().size() > 0) {
+        if (!Bukkit.getOnlinePlayers().isEmpty()) {
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
             out.writeUTF("check");
             out.writeBoolean(parser.isBungeeCord());
@@ -274,8 +269,8 @@ public class F3NameBukkit extends JavaPlugin implements Listener, F3Name {
         addHookPie("vault", Bukkit.getPluginManager().getPlugin("Vault"));
     }
 
-    private void addHookPie(String charid, Plugin plugin) {
-        metrics.addCustomChart(new BukkitMetrics.AdvancedPie(charid, () -> {
+    private void addHookPie(String chartId, Plugin plugin) {
+        metrics.addCustomChart(new BukkitMetrics.AdvancedPie(chartId, () -> {
             Map<String, Integer> map = new HashMap<>();
             if (plugin != null) {
                 map.put(plugin.getDescription().getVersion(), 1);
@@ -315,14 +310,14 @@ public class F3NameBukkit extends JavaPlugin implements Listener, F3Name {
             runnables.put(group.getGroupName(), runnable);
         }
 
-        Bukkit.getOnlinePlayers().forEach(p -> addPlayer(p));
+        Bukkit.getOnlinePlayers().forEach(this::addPlayer);
     }
 
     private void searchHooks() {
         HOOKS.clear();
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             HOOKS.add("PAPI");
-            papiHook = new PAPIHook(Bukkit.getPluginManager().getPlugin("PlaceholderAPI"));
+            PAPIHook.setup(Bukkit.getPluginManager().getPlugin("PlaceholderAPI"));
             logger.info("Found PlaceholderAPI! Using it for placeholders.");
         }
 

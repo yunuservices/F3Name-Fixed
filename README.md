@@ -22,4 +22,4 @@ With this plugin you can easily edit server brand from default ("Spigot", or ver
 ![Local world time](https://www.spigotmc.org/attachments/ezgif-4-dda45a2c9f-gif.357307/)
 
 ## Compiling
-Clone or download this repository and import it like `Maven project` into your IDE. Then build `F3Name` project, and plugin jar will appear in `target` folder.
+Clone or download this repository and import it like `Maven project` into your IDE. Then build `F3Name` project using `package`, and plugin jar will appear in `target` folder.

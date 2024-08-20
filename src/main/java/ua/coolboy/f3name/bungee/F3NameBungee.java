@@ -1,19 +1,6 @@
 package ua.coolboy.f3name.bungee;
 
-import ua.coolboy.f3name.core.hooks.bungee.BungeePlaceholders;
-import ua.coolboy.f3name.spiget.SpigetUpdateBungee;
-import ua.coolboy.f3name.metrics.BungeeMetrics;
 import com.google.common.collect.ImmutableList;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -21,30 +8,26 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 import ua.coolboy.f3name.api.F3NameAPI;
 import ua.coolboy.f3name.bungee.messenger.BungeeMessenger;
-
-import ua.coolboy.f3name.core.F3Group;
-import ua.coolboy.f3name.core.F3Name;
-import ua.coolboy.f3name.core.F3Runnable;
-import ua.coolboy.f3name.core.LoggerUtil;
-import ua.coolboy.f3name.core.PacketSerializer;
-import ua.coolboy.f3name.spiget.updater.UpdateCallback;
-import ua.coolboy.f3name.spiget.updater.comparator.VersionComparator;
+import ua.coolboy.f3name.core.*;
 import ua.coolboy.f3name.core.hooks.ILuckPermsHook;
 import ua.coolboy.f3name.core.hooks.LuckPermsHook;
+import ua.coolboy.f3name.metrics.BungeeMetrics;
+import ua.coolboy.f3name.spiget.SpigetUpdateBungee;
+import ua.coolboy.f3name.spiget.updater.UpdateCallback;
+import ua.coolboy.f3name.spiget.updater.comparator.VersionComparator;
+
+import java.io.IOException;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class F3NameBungee extends Plugin implements F3Name {
 
+    private static final List<String> HOOKS = new ArrayList<>();
     private BungeeLoggerUtil logger;
     private BungeeConfigParser parser;
-
     private BungeeMessenger messenger;
-
     private BungeeMetrics metrics;
-
     private ILuckPermsHook lpHook;
-
-    private static final List<String> HOOKS = new ArrayList<>();
-
     private List<String> hookedServers;
 
     private Map<String, BungeeF3Runnable> runnables;
@@ -65,7 +48,7 @@ public class F3NameBungee extends Plugin implements F3Name {
 
         logger.info("Starting BungeeCord version...");
 
-        new F3NameAPI(this);
+        F3NameAPI.setInstance(this);
 
         messenger = new BungeeMessenger(this);
 
@@ -93,8 +76,8 @@ public class F3NameBungee extends Plugin implements F3Name {
         setupMetrics();
 
         logger.info("Plugin enabled!");
-        
-        if(parser.checkForUpdates()) {
+
+        if (parser.checkForUpdates()) {
             checkUpdate();
         }
     }
@@ -106,7 +89,7 @@ public class F3NameBungee extends Plugin implements F3Name {
             runnables.put(group.getGroupName(), runnable);
         }
 
-        getProxy().getPlayers().forEach(p -> addPlayer(p));
+        getProxy().getPlayers().forEach(this::addPlayer);
     }
 
     public BungeeMessenger getMessenger() {
@@ -254,8 +237,9 @@ public class F3NameBungee extends Plugin implements F3Name {
         addHookPie("luckperms", getProxy().getPluginManager().getPlugin("LuckPerms"));
     }
 
-    private void addHookPie(String charid, Plugin plugin) {
-        metrics.addCustomChart(new BungeeMetrics.AdvancedPie(charid, () -> {
+    @SuppressWarnings("SameParameterValue")
+    private void addHookPie(String chartId, Plugin plugin) {
+        metrics.addCustomChart(new BungeeMetrics.AdvancedPie(chartId, () -> {
             Map<String, Integer> map = new HashMap<>();
             if (plugin != null) {
                 map.put(plugin.getDescription().getVersion(), 1);

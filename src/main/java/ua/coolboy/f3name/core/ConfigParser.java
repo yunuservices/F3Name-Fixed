@@ -4,12 +4,12 @@ import java.util.List;
 
 public interface ConfigParser {
 
-    public boolean isColoredConsole();
+    boolean isColoredConsole();
     
-    public boolean checkForUpdates();
+    boolean checkForUpdates();
 
-    public F3Group getF3Group(String name);
+    F3Group getF3Group(String name);
 
-    public List<F3Group> getF3GroupList();
+    List<F3Group> getF3GroupList();
     
 }

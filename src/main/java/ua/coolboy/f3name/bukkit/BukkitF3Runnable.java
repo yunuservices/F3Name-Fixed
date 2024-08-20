@@ -13,14 +13,14 @@ import ua.coolboy.f3name.core.F3Runnable;
 
 public class BukkitF3Runnable extends BukkitRunnable implements F3Runnable {
 
-    private List<String> names;
+    private final List<String> names;
     private int current;
-    private F3NameBukkit plugin;
-    private F3Group group;
+    private final F3NameBukkit plugin;
+    private final F3Group group;
 
     private static final Random random = new Random();
 
-    private List<Player> players;
+    private final List<Player> players;
 
     public BukkitF3Runnable(F3NameBukkit plugin, F3Group group) {
         this.plugin = plugin;

@@ -10,7 +10,7 @@ import net.md_5.bungee.event.EventHandler;
 
 public class BungeeEventListener implements Listener {
 
-    private F3NameBungee plugin;
+    private final F3NameBungee plugin;
 
     public BungeeEventListener(F3NameBungee plugin) {
         this.plugin = plugin;
@@ -43,12 +43,12 @@ public class BungeeEventListener implements Listener {
             plugin.getPlayerGroup(player); //ask method to get player group
         }
     }
-    
+
     //Forward server brand through bungee
     @EventHandler
     public void onPluginMessage(PluginMessageEvent e) {
-        if(e.getTag().equals(F3NameBungee.BRAND_CHANNEL) && e.getReceiver() instanceof ProxiedPlayer) {
-            if(e.isCancelled()) return;
+        if (e.getTag().equals(F3NameBungee.BRAND_CHANNEL) && e.getReceiver() instanceof ProxiedPlayer) {
+            if (e.isCancelled()) return;
             ProxiedPlayer player = (ProxiedPlayer) e.getReceiver();
             e.setCancelled(true);
             player.sendData(F3NameBungee.BRAND_CHANNEL, e.getData());

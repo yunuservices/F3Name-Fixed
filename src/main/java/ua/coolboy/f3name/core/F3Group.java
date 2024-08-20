@@ -4,10 +4,10 @@ import java.util.List;
 
 public class F3Group {
 
-    private String group;
-    private List<String> messages;
-    private boolean shuffle;
-    private int updateTime;
+    private final String group;
+    private final List<String> messages;
+    private final boolean shuffle;
+    private final int updateTime;
     
     public static final String DEFAULT_GROUP = "everyone";
     

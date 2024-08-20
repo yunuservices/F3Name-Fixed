@@ -16,8 +16,8 @@ import ua.coolboy.f3name.core.F3Group;
 
 public class LP5 implements ILuckPermsHook{
     
-    private LuckPerms api;
-    private List<String> groups;
+    private final LuckPerms api;
+    private final List<String> groups;
 
     public LP5(List<F3Group> groups) {
         this.api = LuckPermsProvider.get();
@@ -56,10 +56,7 @@ public class LP5 implements ILuckPermsHook{
                 //max by weight
                 .max(GROUP_COMPARATOR);
 
-        if (!group.isPresent()) {
-            return F3Group.DEFAULT_GROUP;
-        }
-        return group.get().getName();
+        return group.map(Group::getName).orElse(F3Group.DEFAULT_GROUP);
     }
 
 }
