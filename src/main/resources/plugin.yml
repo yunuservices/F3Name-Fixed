@@ -2,7 +2,8 @@ name: F3Name
 main: ua.coolboy.f3name.bukkit.F3NameBukkit
 version: ${f3name.version}
 author: Cool_boy
-api-version: 1.13
+folia-supported: true
+api-version: 1.21.8
 softdepend: [PlaceholderAPI, LuckPerms]
 commands:
   f3name:
